@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Crear canción</title>
+  <link rel="stylesheet" href="styles.css" />
+  <link rel="stylesheet" href="crear_cancion.css" />
+  <link rel="stylesheet" href="song-print.css" />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Roboto+Mono:wght@400;700&display=swap" rel="stylesheet">
+</head>
+<body>
+  <header class="app-header">
+    <div class="container header-row">
+      <div>
+        <h1>Crear canción</h1>
+        <p>Escribe letra y acordes en un único bloque y ajusta la vista previa.</p>
+      </div>
+      <nav class="top-nav">
+        <a href="index.html">Inicio</a>
+      </nav>
+    </div>
+  </header>
+
+  <main class="container create-song-page">
+    <section class="panel">
+      <form id="song-form">
+        <div class="song-top-fields">
+          <div class="form-group">
+            <label for="song-title">Nombre de la canción</label>
+            <input type="text" id="song-title" required />
+          </div>
+
+          <div class="form-group">
+            <label for="song-artist">Artista</label>
+            <input type="text" id="song-artist" />
+          </div>
+        </div>
+
+        <div class="single-editor-layout">
+          <section class="editor-panel">
+            <div class="editor-panel-header">
+              <h2>Editor</h2>
+              <p>
+                Usa (E)A para azul, (E)R para rojo y (E) para negro. [para texto en rojo]
+              </p>
+            </div>
+
+            <textarea
+              id="song-content"
+              class="song-editor-textarea"
+              placeholder="(E)A Fui a la orilla del río, y vi que estabas muy sola
+              (F)R vi que te habías dormido, vi que crecían amapolas"
+            ></textarea>
+          </section>
+        </div>
+
+        <section class="panel print-preview-panel">
+          <h2>Vista previa de impresión</h2>
+          <div id="print-preview-page" class="print-preview-pages"></div>
+        </section>
+
+        <div class="form-actions">
+          <button type="submit">Guardar canción</button>
+          <button type="button" class="secondary" id="clear-all">Limpiar</button>
+        </div>
+      </form>
+    </section>
+  </main>
+
+  <script src="song-print.js"></script>
+  <script src="crear_cancion.js"></script>
+</body>
+</html>

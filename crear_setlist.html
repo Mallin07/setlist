@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Crear setlist</title>
+
+  <link rel="stylesheet" href="styles.css" />
+  <link rel="stylesheet" href="crear_setlist.css" />
+</head>
+<body>
+  <header class="app-header">
+    <div class="container header-row">
+      <div>
+        <h1>Crear setlist</h1>
+        <p>Crea una nueva lista y ordena las canciones como quieras.</p>
+      </div>
+
+      <nav class="top-nav">
+        <a href="index.html">Inicio</a>
+      </nav>
+    </div>
+  </header>
+
+  <main class="container create-setlist-page">
+    <section class="create-setlist-layout">
+      <aside class="panel setlist-library-panel">
+        <h2>Biblioteca de canciones</h2>
+
+        <div class="form-group">
+          <label for="setlist-song-search">Buscar canción</label>
+          <input
+            type="text"
+            id="setlist-song-search"
+            placeholder="Buscar por artista o canción"
+          />
+        </div>
+
+        <div id="setlist-song-list" class="setlist-song-list"></div>
+      </aside>
+
+      <section class="panel setlist-editor-panel">
+        <form id="setlist-form">
+          <div class="form-group">
+            <label for="setlist-name">Nombre del setlist</label>
+            <input
+              type="text"
+              id="setlist-name"
+              placeholder="Ej. Concierto acústico"
+              required
+            />
+          </div>
+
+          <div class="setlist-selected-header">
+            <h2>Canciones del setlist</h2>
+            <p>Ordénalas después de añadirlas.</p>
+          </div>
+
+          <div id="setlist-selected-empty" class="songs-empty-state">
+            Todavía no has añadido canciones.
+          </div>
+
+          <div id="setlist-selected-list" class="setlist-selected-list"></div>
+
+          <div class="form-actions">
+            <button type="submit">Guardar setlist</button>
+            <button type="button" class="secondary" id="clear-setlist-btn">Limpiar</button>
+          </div>
+        </form>
+      </section>
+    </section>
+  </main>
+
+  <script src="crear_setlist.js"></script>
+</body>
+</html>

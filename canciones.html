@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Canciones</title>
+
+  <link rel="stylesheet" href="styles.css" />
+  <link rel="stylesheet" href="canciones.css" />
+  <link rel="stylesheet" href="song-print.css" />
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Roboto+Mono:wght@400;700&display=swap" rel="stylesheet">
+</head>
+<body>
+  <header class="app-header">
+    <div class="container header-row">
+      <div>
+        <h1>Canciones</h1>
+        <p>Listado de canciones guardadas y vista en formato de impresión.</p>
+      </div>
+
+      <nav class="top-nav">
+        <a href="index.html">Inicio</a>
+      </nav>
+    </div>
+  </header>
+
+  <main class="container songs-page">
+    <section class="songs-layout">
+      <aside class="panel songs-sidebar">
+        <h2>Biblioteca</h2>
+
+        <div class="form-group">
+          <label for="song-search">Buscar</label>
+          <input
+            type="text"
+            id="song-search"
+            placeholder="Buscar por artista o canción"
+          />
+        </div>
+
+        <div class="form-actions">
+          <button type="button" id="export-songs-btn">Exportar canciones</button>
+          <button type="button" id="import-songs-btn" class="secondary">Importar canciones</button>
+          <input
+            type="file"
+            id="import-songs-file"
+            accept=".json,application/json"
+            hidden
+          />
+        </div>
+
+        <div id="songs-list" class="songs-list"></div>
+      </aside>
+
+      <section class="panel songs-viewer-panel">
+        <div id="song-viewer-empty" class="songs-empty-state">
+          Selecciona una canción para verla aquí.
+        </div>
+
+        <div id="song-tools" class="song-tools hidden">
+          <div class="song-tools-row">
+            <div class="form-group transpose-field">
+              <label for="transpose-select">Transporte</label>
+              <select id="transpose-select">
+                <option value="-6">-6</option>
+                <option value="-5">-5</option>
+                <option value="-4">-4</option>
+                <option value="-3">-3</option>
+                <option value="-2">-2</option>
+                <option value="-1">-1</option>
+                <option value="0" selected>0</option>
+                <option value="1">+1</option>
+                <option value="2">+2</option>
+                <option value="3">+3</option>
+                <option value="4">+4</option>
+                <option value="5">+5</option>
+                <option value="6">+6</option>
+              </select>
+            </div>
+
+            <div class="form-group transpose-field">
+              <label for="notation-select">Notación</label>
+              <select id="notation-select">
+                <option value="sharp" selected>#</option>
+                <option value="flat">b</option>
+              </select>
+            </div>
+
+            <div class="song-actions">
+              <button type="button" id="edit-song-btn">Editar</button>
+              <button type="button" id="duplicate-song-btn" class="secondary">Duplicar</button>
+              <button type="button" id="save-transposed-btn" class="secondary">Guardar transpuesta</button>
+              <button type="button" class="danger" id="delete-song-btn">Eliminar</button>
+            </div>
+          </div>
+
+          <form id="song-edit-form" class="song-edit-form hidden">
+            <div class="song-edit-grid">
+              <div class="form-group">
+                <label for="edit-song-title">Nombre de la canción</label>
+                <input type="text" id="edit-song-title" required />
+              </div>
+
+              <div class="form-group">
+                <label for="edit-song-artist">Artista</label>
+                <input type="text" id="edit-song-artist" />
+              </div>
+            </div>
+
+            <div class="form-group">
+              <label for="edit-song-content">Letra y acordes</label>
+              <textarea
+                id="edit-song-content"
+                class="song-edit-textarea"
+                required
+              ></textarea>
+            </div>
+
+            <div class="song-edit-actions">
+              <button type="submit">Guardar cambios</button>
+              <button type="button" class="secondary" id="cancel-edit-btn">Cancelar</button>
+            </div>
+          </form>
+        </div>
+
+        <div id="song-viewer" class="song-viewer hidden"></div>
+      </section>
+    </section>
+  </main>
+
+  <script src="song-print.js"></script>
+  <script src="canciones.js"></script>
+</body>
+</html>

@@ -1,0 +1,87 @@
+.create-song-page {
+  padding: 24px 0 32px;
+}
+
+.song-top-fields {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+  margin-bottom: 20px;
+}
+
+.single-editor-layout {
+  margin-bottom: 20px;
+}
+
+.editor-panel {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+}
+
+.editor-panel-header {
+  margin-bottom: 10px;
+}
+
+.editor-panel-header h2 {
+  margin-bottom: 6px;
+}
+
+.editor-panel-header p {
+  margin: 0;
+  color: var(--muted);
+}
+
+.song-editor-textarea {
+  width: 100%;
+  min-height: 420px;
+  height: 420px;
+  resize: vertical;
+  font-family: "Roboto Mono", monospace;
+  line-height: 1.5;
+  font-size: 1rem;
+  white-space: pre;
+}
+
+.preview-controls {
+  display: flex;
+  gap: 16px;
+  flex-wrap: wrap;
+  margin-bottom: 20px;
+}
+
+.small-field {
+  min-width: 180px;
+  flex: 1 1 180px;
+}
+
+.print-preview-panel {
+  background: #eef2f7;
+}
+
+.print-preview-pages {
+  display: flex;
+  flex-direction: column;
+  gap: 28px;
+  align-items: center;
+  padding: 12px 0 4px;
+}
+
+
+@media (max-width: 900px) {
+  .song-top-fields {
+    grid-template-columns: 1fr;
+  }
+
+  .print-page {
+    width: 100%;
+    min-height: auto;
+    padding: 20px;
+  }
+
+  .print-page-label {
+    position: static;
+    display: block;
+    margin-bottom: 8px;
+  }
+}

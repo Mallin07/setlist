@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Setlists</title>
+
+  <link rel="stylesheet" href="styles.css" />
+  <link rel="stylesheet" href="setlists.css" />
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Roboto+Mono:wght@400;700&display=swap" rel="stylesheet">
+</head>
+<body>
+  <header class="app-header">
+    <div class="container header-row">
+      <div>
+        <h1>Setlists</h1>
+        <p>Consulta, edita, duplica y exporta tus setlists.</p>
+      </div>
+
+      <nav class="top-nav">
+        <a href="index.html">Inicio</a>
+      </nav>
+    </div>
+  </header>
+
+  <main class="container setlists-page">
+    <section class="setlists-layout">
+      <aside class="panel setlists-sidebar">
+        <h2>Setlists guardados</h2>
+
+        <div class="form-group">
+          <label for="setlist-search">Buscar</label>
+          <input
+            type="text"
+            id="setlist-search"
+            placeholder="Buscar por nombre de setlist"
+          />
+        </div>
+
+        <div id="setlists-list" class="setlists-list"></div>
+      </aside>
+
+      <section class="panel setlists-viewer-panel">
+        <div id="setlist-viewer-empty" class="songs-empty-state">
+          Selecciona un setlist para verlo aquí.
+        </div>
+
+        <div id="setlist-tools" class="setlist-tools hidden">
+          <div class="setlist-tools-row">
+            <div class="setlist-actions">
+              <button type="button" id="edit-setlist-btn">Editar</button>
+              <button type="button" id="duplicate-setlist-btn" class="secondary">Duplicar</button>
+              <button type="button" id="export-setlist-pdf-btn" class="secondary">Exportar PDF</button>
+              <button type="button" class="danger" id="delete-setlist-btn">Eliminar</button>
+            </div>
+          </div>
+
+          <form id="setlist-edit-form" class="setlist-edit-form hidden">
+            <div class="form-group">
+              <label for="edit-setlist-name">Nombre del setlist</label>
+              <input type="text" id="edit-setlist-name" required />
+            </div>
+
+            <div class="setlist-edit-header">
+              <h2>Canciones del setlist</h2>
+              <p>Arrastra para reordenar y quita las que no quieras.</p>
+            </div>
+
+            <div id="edit-setlist-songs-empty" class="songs-empty-state hidden">
+              Este setlist no tiene canciones.
+            </div>
+
+            <div id="edit-setlist-songs-list" class="setlist-selected-list"></div>
+
+            <div class="song-edit-actions">
+              <button type="submit">Guardar cambios</button>
+              <button type="button" class="secondary" id="cancel-edit-setlist-btn">Cancelar</button>
+            </div>
+          </form>
+        </div>
+
+        <div id="setlist-viewer" class="setlist-viewer hidden">
+          <div class="setlist-viewer-header">
+            <h2 id="viewer-setlist-title">Setlist</h2>
+            <p id="viewer-setlist-meta"></p>
+          </div>
+
+          <div id="viewer-setlist-songs-empty" class="songs-empty-state hidden">
+            Este setlist no tiene canciones.
+          </div>
+
+          <div id="viewer-setlist-songs" class="setlist-songs-view"></div>
+        </div>
+      </section>
+    </section>
+  </main>
+
+  <script src="setlists.js"></script>
+</body>
+</html>

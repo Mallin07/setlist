@@ -1,0 +1,275 @@
+.create-setlist-page {
+  padding: 24px 0 32px;
+}
+
+.create-setlist-layout {
+  display: grid;
+  grid-template-columns: 340px 1fr;
+  gap: 20px;
+  align-items: start;
+}
+
+.setlist-library-panel {
+  position: sticky;
+  top: 20px;
+}
+
+.setlist-editor-panel {
+  min-width: 0;
+}
+
+.setlist-song-list {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.song-artist-group {
+  border: 1px solid #dbe3ef;
+  border-radius: 12px;
+  background: #f8fafc;
+  overflow: hidden;
+}
+
+.song-artist-group[open] {
+  background: #fdfefe;
+}
+
+.song-artist-summary {
+  list-style: none;
+  cursor: pointer;
+  padding: 14px 16px;
+  font-weight: 700;
+  font-size: 1rem;
+  user-select: none;
+  border-bottom: 1px solid transparent;
+}
+
+.song-artist-summary::-webkit-details-marker {
+  display: none;
+}
+
+.song-artist-group[open] .song-artist-summary {
+  border-bottom-color: #dbe3ef;
+}
+
+.song-artist-summary::after {
+  content: "▸";
+  float: right;
+  color: #6b7280;
+  transition: transform 0.2s ease;
+}
+
+.song-artist-group[open] .song-artist-summary::after {
+  transform: rotate(90deg);
+}
+
+.song-artist-songs {
+  display: flex;
+  flex-direction: column;
+  padding: 8px;
+  gap: 8px;
+}
+
+.setlist-song-item {
+  border: 1px solid #dbe3ef;
+  border-radius: 10px;
+  padding: 10px 12px;
+  background: #ffffff;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.setlist-song-main {
+  min-width: 0;
+  flex: 1;
+}
+
+.setlist-song-title {
+  font-weight: 600;
+  color: #111827;
+  line-height: 1.3;
+}
+
+.setlist-song-actions {
+  display: flex;
+  justify-content: flex-end;
+  flex-shrink: 0;
+}
+
+.setlist-song-actions button {
+  width: auto;
+}
+
+.setlist-selected-header {
+  margin: 22px 0 14px;
+}
+
+.setlist-selected-header h2 {
+  margin-bottom: 6px;
+}
+
+.setlist-selected-header p {
+  margin: 0;
+  color: var(--muted);
+}
+
+.setlist-selected-list {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  margin-bottom: 20px;
+}
+
+.setlist-selected-item {
+  border: 1px solid #dbe3ef;
+  border-radius: 12px;
+  padding: 10px 14px;
+  background: #f8fafc;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 14px;
+  transition: border-color 0.2s ease, background 0.2s ease, box-shadow 0.2s ease, opacity 0.2s ease;
+}
+
+.setlist-selected-item-main {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  min-width: 0;
+  flex: 1;
+}
+
+.setlist-selected-position {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 28px;
+  height: 28px;
+  border-radius: 999px;
+  background: #dbeafe;
+  color: #1d4ed8;
+  font-weight: 700;
+  font-size: 0.9rem;
+  flex-shrink: 0;
+}
+
+.setlist-selected-title {
+  font-weight: 700;
+  color: #111827;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.setlist-selected-meta {
+  color: var(--muted);
+  font-size: 0.9rem;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.setlist-selected-meta::before {
+  content: "— ";
+  margin: 0 4px;
+}
+
+.setlist-selected-actions {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+  justify-content: flex-end;
+  flex-shrink: 0;
+}
+
+.setlist-selected-actions button {
+  width: auto;
+  min-width: 96px;
+}
+
+/* Drag & Drop */
+
+.setlist-selected-item[draggable="true"] {
+  cursor: grab;
+}
+
+.setlist-selected-item[draggable="true"]:active {
+  cursor: grabbing;
+}
+
+.setlist-selected-item.dragging {
+  opacity: 0.45;
+  border-color: #60a5fa;
+  background: #eff6ff;
+  box-shadow: 0 10px 24px rgba(37, 99, 235, 0.16);
+}
+
+.setlist-selected-item.drag-over {
+  border-color: #2563eb;
+  background: #dbeafe;
+}
+
+.setlist-selected-item.drag-over-top {
+  box-shadow: inset 0 3px 0 #2563eb;
+}
+
+.setlist-selected-item.drag-over-bottom {
+  box-shadow: inset 0 -3px 0 #2563eb;
+}
+
+.setlist-selected-list.is-dragging {
+  user-select: none;
+}
+
+.songs-empty-state {
+  color: var(--muted);
+}
+
+.hidden {
+  display: none;
+}
+
+.setlist-selected-item {
+  cursor: grab;
+}
+
+.setlist-selected-item:active {
+  cursor: grabbing;
+}
+
+@media (max-width: 1100px) {
+  .create-setlist-layout {
+    grid-template-columns: 1fr;
+  }
+
+  .setlist-library-panel {
+    position: static;
+  }
+}
+
+@media (max-width: 700px) {
+  .setlist-song-item,
+  .setlist-selected-item {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .setlist-selected-item-main {
+    flex-wrap: wrap;
+  }
+
+  .setlist-song-actions,
+  .setlist-selected-actions {
+    justify-content: stretch;
+  }
+
+  .setlist-song-actions button,
+  .setlist-selected-actions button {
+    width: 100%;
+    min-width: 0;
+  }
+}
