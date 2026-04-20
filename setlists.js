@@ -456,10 +456,10 @@ function buildPrintableSetlistHtml(setlist, setlistSongs) {
       artist: song.artist || "",
       content: song.content || "",
       printSettings: {
-        chordSize: 22,
-        lyricSize: 22,
-        lineGap: 7,
-        stanzaGap: 22
+        chordSize: 21,
+        lyricSize: 21,
+        lineGap: 6,
+        stanzaGap: 21
       }
     }))
   };
