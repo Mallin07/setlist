@@ -39,6 +39,7 @@
   font-size: 1rem;
   user-select: none;
   border-bottom: 1px solid transparent;
+  background: #94b9f3; 
 }
 
 .song-artist-summary::-webkit-details-marker {

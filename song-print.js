@@ -293,8 +293,11 @@
      RENDER FINAL
   ========================= */
 
-  async function renderSongPages(container, parsed, settings) {
+  let renderSongPagesToken = 0;
 
+  async function renderSongPages(container, parsed, settings) {
+    const token = ++renderSongPagesToken;
+  
     const {
       title = "Sin título",
       artist = "",
@@ -305,21 +308,25 @@
       transposeAmount = 0,
       notation = "sharp"
     } = settings || {};
-
-    container.innerHTML = "";
+  
     container.classList.add("print-preview-mode");
-
+  
     if (document.fonts && document.fonts.ready) {
       await document.fonts.ready;
     }
-
+  
+    // Si hubo otro render más reciente, este ya no pinta nada
+    if (token !== renderSongPagesToken) return;
+  
+    container.replaceChildren();
+  
     const PAGE_HEIGHT = mmToPx(297 - 30);
-
+  
     let currentPage = createPrintPage(1, title, artist, transposeAmount, notation);
     let currentBody = currentPage.querySelector(".print-body");
-
+  
     container.appendChild(currentPage);
-
+  
     parsed.forEach(block => {
       const blockEl = buildPrintBlock(
         block,
@@ -330,14 +337,14 @@
         transposeAmount,
         notation
       );
-
+  
       currentBody.appendChild(blockEl);
-
+  
       if (currentBody.scrollHeight > PAGE_HEIGHT - 4) {
         currentBody.removeChild(blockEl);
-
+  
         const pageNum = container.querySelectorAll(".print-page").length + 1;
-
+  
         currentPage = createPrintPage(
           pageNum,
           title,
@@ -345,7 +352,7 @@
           transposeAmount,
           notation
         );
-
+  
         currentBody = currentPage.querySelector(".print-body");
         container.appendChild(currentPage);
         currentBody.appendChild(blockEl);
