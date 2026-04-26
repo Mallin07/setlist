@@ -298,10 +298,10 @@
     const {
       title = "Sin título",
       artist = "",
-      chordSize = 21,
-      lyricSize = 21,
-      lineGap = 6,
-      stanzaGap = 21,
+      chordSize = 18,
+      lyricSize = 18,
+      lineGap = 4,
+      stanzaGap = 18,
       transposeAmount = 0,
       notation = "sharp"
     } = settings || {};

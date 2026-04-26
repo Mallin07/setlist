@@ -255,10 +255,10 @@ function renderSelectedSong() {
   const transposeAmount = Number(transposeSelect.value || 0);
   const notation = notationSelect.value || "sharp";
 
-  const chordSize = 21;
-  const lyricSize = 21;
-  const lineGap = 6;
-  const stanzaGap = 21;
+  const chordSize = 18;
+  const lyricSize = 18;
+  const lineGap = 4;
+  const stanzaGap = 18;
 
   SongPrint.renderSongPages(songViewer, parsed, {
     title: previewTitle,

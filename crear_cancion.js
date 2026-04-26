@@ -45,10 +45,10 @@ async function renderAll() {
   await SongPrint.renderSongPages(printPreview, parsed, {
     title: titleInput.value.trim() || "Sin título",
     artist: artistInput.value.trim(),
-    chordSize: 21,
-    lyricSize: 21,
-    lineGap: 6,
-    stanzaGap: 21,
+    chordSize: 18,
+    lyricSize: 18,
+    lineGap: 4,
+    stanzaGap: 18,
     transposeAmount: 0,
     notation: "sharp"
   });
