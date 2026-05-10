@@ -39,7 +39,7 @@
   font-size: 1rem;
   user-select: none;
   border-bottom: 1px solid transparent;
-  background: #94b9f3; 
+  background: #94b9f3;
 }
 
 .song-artist-summary::-webkit-details-marker {
@@ -105,8 +105,7 @@
 .song-viewer {
   display: flex;
   flex-direction: column;
-  gap: 28px;
-  align-items: center;
+  gap: 24px;
 }
 
 .song-tools {
@@ -115,16 +114,11 @@
 
 .song-tools-row {
   display: flex;
-  justify-content: space-between;
-  align-items: end;
+  justify-content: flex-end;
+  align-items: center;
   gap: 16px;
   flex-wrap: wrap;
   margin-bottom: 16px;
-}
-
-.transpose-field {
-  min-width: 140px;
-  margin-bottom: 0;
 }
 
 .song-actions {
@@ -147,26 +141,30 @@
   gap: 16px;
 }
 
-.song-edit-textarea {
-  min-height: 280px;
-  resize: vertical;
-  font-family: "Roboto Mono", monospace;
-  white-space: pre;
-  line-height: 1.5;
-}
-
 .song-edit-actions {
   display: flex;
   gap: 10px;
   flex-wrap: wrap;
 }
 
-.print-chord-line span {
-  box-sizing: border-box;
+.pdf-song-header {
+  width: 100%;
 }
 
-.songs-sidebar .form-actions {
-  margin-bottom: 16px;
+.pdf-song-header h2 {
+  margin-bottom: 6px;
+}
+
+.pdf-song-header p {
+  margin: 0 0 6px;
+}
+
+.pdf-song-viewer {
+  width: 100%;
+  min-height: 80vh;
+  border: 1px solid #dbe3ef;
+  border-radius: 12px;
+  background: white;
 }
 
 @media (max-width: 900px) {
@@ -182,17 +180,5 @@
 
   .songs-sidebar {
     position: static;
-  }
-
-  .print-page {
-    width: 100%;
-    min-height: auto;
-    padding: 20px;
-  }
-
-  .print-page-label {
-    position: static;
-    display: block;
-    margin-bottom: 8px;
   }
 }

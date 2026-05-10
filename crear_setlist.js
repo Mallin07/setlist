@@ -17,7 +17,7 @@ let draggedSongIndex = null;
 init();
 
 function init() {
-  songs = loadFromStorage(SONGS_STORAGE_KEY, []).sort(compareSongsByArtistThenTitle);
+  songs = getSongsData().sort(compareSongsByArtistThenTitle);
   filteredSongs = [...songs];
 
   songSearchInput.addEventListener("input", handleSearch);
@@ -264,6 +264,7 @@ function handleSaveSetlist(event) {
   event.preventDefault();
 
   const name = setlistNameInput.value.trim();
+  const totalDurationSeconds = getSelectedSongsTotalDuration();
 
   if (!name) {
     alert("Debes indicar un nombre para el setlist.");
@@ -281,6 +282,7 @@ function handleSaveSetlist(event) {
     id: generateId(),
     name,
     songIds: [...selectedSongIds],
+    totalDurationSeconds,
     createdAt: new Date().toISOString(),
     updatedAt: new Date().toISOString()
   };
@@ -384,4 +386,31 @@ function escapeHtml(text) {
     .replaceAll(">", "&gt;")
     .replaceAll('"', "&quot;")
     .replaceAll("'", "&#039;");
+}
+
+function getSelectedSongsTotalDuration() {
+  return selectedSongIds.reduce((total, songId) => {
+    const song = songs.find(item => item.id === songId);
+    return total + Number(song?.durationSeconds || 0);
+  }, 0);
+}
+
+function formatDuration(totalSeconds) {
+  const seconds = Number(totalSeconds || 0);
+
+  const hours = Math.floor(seconds / 3600);
+  const minutes = Math.floor((seconds % 3600) / 60);
+  const remainingSeconds = seconds % 60;
+
+  if (hours > 0) {
+    return `${hours}:${String(minutes).padStart(2, "0")}:${String(remainingSeconds).padStart(2, "0")}`;
+  }
+
+  return `${minutes}:${String(remainingSeconds).padStart(2, "0")}`;
+}
+
+function getSongsData() {
+  return Array.isArray(window.SONGS_DATA)
+    ? [...window.SONGS_DATA]
+    : [];
 }

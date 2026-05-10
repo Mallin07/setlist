@@ -34,7 +34,7 @@ let draggedSongIndex = null;
 init();
 
 function init() {
-  songs = loadFromStorage(SONGS_STORAGE_KEY, []).sort(compareSongsByArtistThenTitle);
+  songs = getSongsData().sort(compareSongsByArtistThenTitle);
   setlists = loadFromStorage(SETLISTS_STORAGE_KEY, []).sort(compareSetlistsByName);
   filteredSetlists = [...setlists];
 
@@ -57,11 +57,7 @@ function init() {
 ========================= */
 
 function handleSearch() {
-  const term = setlistSearchInput.value.trim().toLocaleLowerCase("es");
-
-  filteredSetlists = setlists.filter(setlist =>
-    (setlist.name || "").toLocaleLowerCase("es").includes(term)
-  );
+  filteredSetlists = applyCurrentFilter();
 
   if (!filteredSetlists.some(setlist => setlist.id === selectedSetlistId)) {
     selectedSetlistId = null;
@@ -136,7 +132,10 @@ function renderSelectedSetlist() {
   const totalSongs = Array.isArray(setlist.songIds) ? setlist.songIds.length : 0;
   const missingSongs = Math.max(0, totalSongs - validSongs.length);
 
-  let metaText = `${totalSongs} ${totalSongs === 1 ? "canción" : "canciones"}`;
+  const totalDurationSeconds = getSetlistTotalDuration(setlist);
+
+  let metaText = `${totalSongs} ${totalSongs === 1 ? "canción" : "canciones"} · Duración total: ${formatDuration(totalDurationSeconds)}`;
+
   if (missingSongs > 0) {
     metaText += ` · ${missingSongs} no ${missingSongs === 1 ? "encontrada" : "encontradas"}`;
   }
@@ -166,9 +165,11 @@ function renderViewerSongs(setlist) {
 
     item.innerHTML = `
       <div class="setlist-song-view-position">${index + 1}</div>
+
       <div class="setlist-song-view-main">
         <div class="setlist-song-view-title">${escapeHtml(song?.title || "Canción no encontrada")}</div>
         <div class="setlist-song-view-meta">${escapeHtml(song?.artist || "Sin artista")}</div>
+        <div class="setlist-song-view-pdf">${escapeHtml(song?.pdfName || "PDF")}</div>
       </div>
     `;
 
@@ -182,6 +183,7 @@ function renderViewerSongs(setlist) {
 
 function openEditForm() {
   const setlist = getSelectedSetlist();
+
   if (!setlist) return;
 
   editSetlistNameInput.value = setlist.name || "";
@@ -224,6 +226,7 @@ function renderEditSongs() {
         <div class="setlist-selected-title">${escapeHtml(song?.title || "Canción no encontrada")}</div>
         <div class="setlist-selected-meta">${escapeHtml(song?.artist || "Sin artista")}</div>
       </div>
+
       <div class="setlist-selected-actions">
         <button type="button" class="danger" data-action="remove">Quitar</button>
       </div>
@@ -242,6 +245,7 @@ function handleSaveEditSetlist(event) {
   event.preventDefault();
 
   const setlist = getSelectedSetlist();
+
   if (!setlist) return;
 
   const name = editSetlistNameInput.value.trim();
@@ -264,6 +268,7 @@ function handleSaveEditSetlist(event) {
   saveToStorage(SETLISTS_STORAGE_KEY, setlists);
 
   filteredSetlists = applyCurrentFilter();
+
   closeEditForm();
   renderSetlistsList();
   renderSelectedSetlist();
@@ -273,6 +278,10 @@ function removeSongFromEdit(index) {
   editingSongIds = editingSongIds.filter((_, currentIndex) => currentIndex !== index);
   renderEditSongs();
 }
+
+/* =========================
+   DRAG AND DROP
+========================= */
 
 function setupDragAndDrop(item, index) {
   item.addEventListener("dragstart", event => {
@@ -325,6 +334,7 @@ function setupDragAndDrop(item, index) {
     const insertAfter = offsetY > rect.height / 2;
 
     let targetIndex = index;
+
     if (insertAfter) {
       targetIndex = index + 1;
     }
@@ -374,6 +384,7 @@ function clearDragStyles() {
 
 function handleDuplicateSetlist() {
   const setlist = getSelectedSetlist();
+
   if (!setlist) return;
 
   const duplicatedSetlist = {
@@ -399,9 +410,11 @@ function handleDuplicateSetlist() {
 
 function handleDeleteSetlist() {
   const setlist = getSelectedSetlist();
+
   if (!setlist) return;
 
   const confirmed = confirm(`¿Eliminar el setlist "${setlist.name || "Sin nombre"}"?`);
+
   if (!confirmed) return;
 
   setlists = setlists.filter(item => item.id !== selectedSetlistId);
@@ -419,8 +432,9 @@ function handleDeleteSetlist() {
    EXPORTAR PDF
 ========================= */
 
-function handleExportSetlistPdf() {
+async function handleExportSetlistPdf() {
   const setlist = getSelectedSetlist();
+
   if (!setlist) return;
 
   const setlistSongs = getSetlistSongs(setlist);
@@ -430,23 +444,115 @@ function handleExportSetlistPdf() {
     return;
   }
 
-  const printWindow = window.open("", "_blank");
+  const songsWithoutPdf = setlistSongs.filter(song => !song.pdfPath);
 
-  if (!printWindow) {
-    alert("No se pudo abrir la ventana de impresión. Revisa si el navegador está bloqueando ventanas emergentes.");
+  if (songsWithoutPdf.length > 0) {
+    alert("Hay canciones sin PDF. Revisa la biblioteca antes de exportar.");
     return;
   }
 
-  const html = buildPrintableSetlistHtml(setlist, setlistSongs);
+  if (!window.PDFLib) {
+    alert("No se pudo cargar la librería para unir PDFs.");
+    return;
+  }
 
-  printWindow.document.open();
-  printWindow.document.write(html);
-  printWindow.document.close();
+  try {
+    const { PDFDocument, StandardFonts, rgb } = PDFLib;
+
+    const mergedPdf = await PDFDocument.create();
+
+    const coverPage = mergedPdf.addPage([595.28, 841.89]);
+    const font = await mergedPdf.embedFont(StandardFonts.Helvetica);
+    const boldFont = await mergedPdf.embedFont(StandardFonts.HelveticaBold);
+
+    let y = 760;
+
+    coverPage.drawText(setlist.name || "Setlist", {
+      x: 50,
+      y,
+      size: 26,
+      font: boldFont,
+      color: rgb(0.07, 0.09, 0.15)
+    });
+
+    y -= 40;
+
+    coverPage.drawText(`${setlistSongs.length} ${setlistSongs.length === 1 ? "canción" : "canciones"}`, {
+      x: 50,
+      y,
+      size: 12,
+      font,
+      color: rgb(0.3, 0.34, 0.42)
+    });
+
+    y -= 50;
+
+    coverPage.drawText("Listado de canciones", {
+      x: 50,
+      y,
+      size: 16,
+      font: boldFont,
+      color: rgb(0.07, 0.09, 0.15)
+    });
+
+    y -= 30;
+
+    setlistSongs.forEach((song, index) => {
+      if (y < 60) return;
+
+      const line = `${index + 1}. ${song.title || "Sin título"}${song.artist ? ` — ${song.artist}` : ""}`;
+
+      coverPage.drawText(line, {
+        x: 50,
+        y,
+        size: 12,
+        font,
+        color: rgb(0.07, 0.09, 0.15)
+      });
+
+      y -= 22;
+    });
+
+    for (const song of setlistSongs) {
+      const response = await fetch(song.pdfPath);
+
+      if (!response.ok) {
+        throw new Error(`No se pudo cargar: ${song.pdfPath}`);
+      }
+
+      const pdfBytes = await response.arrayBuffer();
+      const sourcePdf = await PDFDocument.load(pdfBytes);
+      const copiedPages = await mergedPdf.copyPages(sourcePdf, sourcePdf.getPageIndices());
+
+      copiedPages.forEach(page => {
+        mergedPdf.addPage(page);
+      });
+    }
+
+    const finalPdfBytes = await mergedPdf.save();
+
+    const blob = new Blob([finalPdfBytes], {
+      type: "application/pdf"
+    });
+
+    const url = URL.createObjectURL(blob);
+
+    const link = document.createElement("a");
+    link.href = url;
+    link.download = `${sanitizeFileName(setlist.name || "setlist")}.pdf`;
+
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+
+    URL.revokeObjectURL(url);
+  } catch (error) {
+    console.error("Error al exportar setlist:", error);
+    alert("No se pudo exportar el setlist. Revisa que los PDFs existan en assets/songs y que estés abriendo la web desde servidor local.");
+  }
 }
 
 function buildPrintableSetlistHtml(setlist, setlistSongs) {
-  const baseHref = location.href.replace(/[^/]*$/, "");
-
   const payload = {
     setlist: {
       name: setlist.name || "Setlist"
@@ -454,13 +560,8 @@ function buildPrintableSetlistHtml(setlist, setlistSongs) {
     songs: setlistSongs.map(song => ({
       title: song.title || "Sin título",
       artist: song.artist || "",
-      content: song.content || "",
-      printSettings: {
-        chordSize: 18,
-        lyricSize: 18,
-        lineGap: 4,
-        stanzaGap: 18
-      }
+      pdfName: song.pdfName || "PDF",
+      pdfDataUrl: song.pdfDataUrl || ""
     }))
   };
 
@@ -480,27 +581,28 @@ function buildPrintableSetlistHtml(setlist, setlistSongs) {
     })
     .join("");
 
+  const pdfSections = payload.songs
+    .map(song => `
+      <section class="pdf-section">
+        <iframe src="${song.pdfDataUrl}" title="${escapeHtml(song.title)}"></iframe>
+      </section>
+    `)
+    .join("");
+
   return `
 <!DOCTYPE html>
 <html lang="es">
 <head>
   <meta charset="UTF-8" />
-  <base href="${escapeHtml(baseHref)}" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>${escapeHtml(payload.setlist.name)}</title>
-
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Roboto+Mono:wght@400;700&display=swap" rel="stylesheet">
-
-  <link rel="stylesheet" href="song-print.css" />
 
   <style>
     * {
       box-sizing: border-box;
     }
 
-    html, body {
+    html,
+    body {
       margin: 0;
       padding: 0;
       background: #fff;
@@ -509,7 +611,7 @@ function buildPrintableSetlistHtml(setlist, setlistSongs) {
     }
 
     .setlist-cover {
-      min-height: calc(297mm - 30mm);
+      min-height: 100vh;
       padding: 15mm;
       page-break-after: always;
       break-after: page;
@@ -536,7 +638,6 @@ function buildPrintableSetlistHtml(setlist, setlistSongs) {
     .setlist-index-title-block h2 {
       margin: 0 0 6mm;
       font-size: 15pt;
-      line-height: 1.2;
     }
 
     .setlist-index {
@@ -557,28 +658,48 @@ function buildPrintableSetlistHtml(setlist, setlistSongs) {
       flex-wrap: wrap;
     }
 
-    .setlist-index-number {
-      font-weight: 700;
-      min-width: 24px;
-      flex-shrink: 0;
-    }
-
+    .setlist-index-number,
     .setlist-index-title {
       font-weight: 700;
+    }
+
+    .setlist-index-number {
+      min-width: 24px;
+      flex-shrink: 0;
     }
 
     .setlist-index-artist {
       color: #4b5563;
     }
 
-    .print-song-section {
+    .pdf-section {
+      width: 100vw;
+      height: 100vh;
       page-break-before: always;
       break-before: page;
+      overflow: hidden;
+    }
+
+    .pdf-section iframe {
+      width: 100%;
+      height: 100%;
+      border: 0;
+      display: block;
     }
 
     @media print {
+      @page {
+        size: A4;
+        margin: 0;
+      }
+
       .setlist-cover {
-        padding: 0;
+        padding: 15mm;
+      }
+
+      .pdf-section {
+        width: 100vw;
+        height: 100vh;
       }
     }
   </style>
@@ -592,48 +713,20 @@ function buildPrintableSetlistHtml(setlist, setlistSongs) {
 
     <div class="setlist-index-title-block">
       <h2>Listado de canciones</h2>
+
       <ol class="setlist-index">
         ${indexHtml}
       </ol>
     </div>
   </section>
 
-  <div id="setlist-print-root"></div>
+  ${pdfSections}
 
-  <script src="song-print.js"><\/script>
   <script>
-    const payload = ${JSON.stringify(payload)};
-    const root = document.getElementById("setlist-print-root");
-
-    payload.songs.forEach(song => {
-      const section = document.createElement("section");
-      section.className = "print-song-section";
-      root.appendChild(section);
-
-      const parsed = window.SongPrint.parseContent(song.content || "");
-
-      window.SongPrint.renderSongPages(section, parsed, {
-        title: song.title || "Sin título",
-        artist: song.artist || "",
-        chordSize: Number(song.printSettings?.chordSize || 16),
-        lyricSize: Number(song.printSettings?.lyricSize || 16),
-        lineGap: Number(song.printSettings?.lineGap || 4),
-        stanzaGap: Number(song.printSettings?.stanzaGap || 16),
-        transposeAmount: 0,
-        notation: "sharp"
-      });
-    });
-
-    const ready = document.fonts && document.fonts.ready
-      ? document.fonts.ready
-      : Promise.resolve();
-
-    ready.then(() => {
-      setTimeout(() => {
-        window.focus();
-        window.print();
-      }, 150);
-    });
+    setTimeout(() => {
+      window.focus();
+      window.print();
+    }, 700);
   <\/script>
 </body>
 </html>
@@ -650,6 +743,7 @@ function getSelectedSetlist() {
 
 function getSetlistSongs(setlist) {
   const songIds = Array.isArray(setlist.songIds) ? setlist.songIds : [];
+
   return songIds
     .map(songId => songs.find(song => song.id === songId))
     .filter(Boolean);
@@ -669,6 +763,7 @@ function compareSetlistsByName(a, b) {
 
   if (nameA < nameB) return -1;
   if (nameA > nameB) return 1;
+
   return 0;
 }
 
@@ -732,4 +827,61 @@ function escapeHtml(text) {
     .replaceAll(">", "&gt;")
     .replaceAll('"', "&quot;")
     .replaceAll("'", "&#039;");
+}
+
+function dataUrlToUint8Array(dataUrl) {
+  const base64 = dataUrl.split(",")[1];
+  const binary = atob(base64);
+  const bytes = new Uint8Array(binary.length);
+
+  for (let i = 0; i < binary.length; i++) {
+    bytes[i] = binary.charCodeAt(i);
+  }
+
+  return bytes;
+}
+
+function sanitizeFileName(name) {
+  return String(name)
+    .trim()
+    .replace(/[\\/:*?"<>|]/g, "-")
+    .replace(/\s+/g, "_")
+    .toLowerCase();
+}
+
+function sanitizeFileName(name) {
+  return String(name)
+    .trim()
+    .replace(/[\\/:*?"<>|]/g, "-")
+    .replace(/\s+/g, "_")
+    .toLowerCase();
+}
+
+function getSetlistTotalDuration(setlist) {
+  const songIds = Array.isArray(setlist.songIds) ? setlist.songIds : [];
+
+  return songIds.reduce((total, songId) => {
+    const song = songs.find(item => item.id === songId);
+    return total + Number(song?.durationSeconds || 0);
+  }, 0);
+}
+
+function formatDuration(totalSeconds) {
+  const seconds = Number(totalSeconds || 0);
+
+  const hours = Math.floor(seconds / 3600);
+  const minutes = Math.floor((seconds % 3600) / 60);
+  const remainingSeconds = seconds % 60;
+
+  if (hours > 0) {
+    return `${hours}:${String(minutes).padStart(2, "0")}:${String(remainingSeconds).padStart(2, "0")}`;
+  }
+
+  return `${minutes}:${String(remainingSeconds).padStart(2, "0")}`;
+}
+
+function getSongsData() {
+  return Array.isArray(window.SONGS_DATA)
+    ? [...window.SONGS_DATA]
+    : [];
 }

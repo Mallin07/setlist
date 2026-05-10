@@ -1,4 +1,4 @@
-const CACHE_NAME = "traklist-cache-v1";
+const CACHE_NAME = "traklist-cache-v2";
 
 const FILES_TO_CACHE = [
   "index.html",
@@ -8,10 +8,6 @@ const FILES_TO_CACHE = [
   "canciones.html",
   "canciones.css",
   "canciones.js",
-
-  "crear_cancion.html",
-  "crear_cancion.css",
-  "crear_cancion.js",
 
   "crear_setlist.html",
   "crear_setlist.css",
