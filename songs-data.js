@@ -18,6 +18,15 @@ window.SONGS_DATA = [
     pdfPath: "assets/songs/alba.pdf"
   },
 
+    // BEBE //
+  {
+    id: "ella",
+    title: "Ella",
+    artist: "Bebe",
+    duration: "0:00",
+    pdfPath: "assets/songs/ella.pdf"
+  },  
+
     // BONGO BOTRAKO //
   {
     id: "chipiron",
