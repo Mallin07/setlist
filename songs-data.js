@@ -6,7 +6,7 @@ window.SONGS_DATA = [
     title: "Sín documentos",
     artist: "Andrés Calamaro",
     duration: "0:00",
-    pdfPath: "assets/songs/sin-documentos.pdf"
+    pdfPath: "assets/songs/sin_documentos.pdf"
   },
 
   // ANTONIO FLORES //
@@ -42,7 +42,7 @@ window.SONGS_DATA = [
     title: "Los tontos",
     artist: "C Tangana",
     duration: "0:00",
-    pdfPath: "assets/songs/los-tontos.pdf"
+    pdfPath: "assets/songs/los_tontos.pdf"
   },  
 
   // Diego Torres //
@@ -51,7 +51,7 @@ window.SONGS_DATA = [
     title: "Color Esperanza",
     artist: "Diego Torres",
     duration: "2:45",
-    pdfPath: "assets/songs/color-esperanza.pdf"
+    pdfPath: "assets/songs/color_esperanza.pdf"
   },
 
   // EL BARRIO //
@@ -60,7 +60,7 @@ window.SONGS_DATA = [
     title: "Los Barrieros",
     artist: "El Barrio",
     duration: "0:00",
-    pdfPath: "assets/songs/los-barrieros.pdf"
+    pdfPath: "assets/songs/los_barrieros.pdf"
   },  
 
   // EL KANKA //
@@ -69,7 +69,7 @@ window.SONGS_DATA = [
     title: "Guapos y guapas",
     artist: "El Kanka",
     duration: "0:00",
-    pdfPath: "assets/songs/guapos-y-guapas.pdf"
+    pdfPath: "assets/songs/guapos_y_guapas.pdf"
   },  
 
   // ESTOPA //
@@ -78,7 +78,7 @@ window.SONGS_DATA = [
     title: "Como Camarón",
     artist: "Estopa",
     duration: "0:00",
-    pdfPath: "assets/songs/como-camaron.pdf"
+    pdfPath: "assets/songs/como_camaron.pdf"
   },
   
   {
@@ -86,7 +86,7 @@ window.SONGS_DATA = [
     title: "Tu calorro",
     artist: "Estopa",
     duration: "0:00",
-    pdfPath: "assets/songs/tu-calorro.pdf"
+    pdfPath: "assets/songs/tu_calorro.pdf"
   },
 
   {
@@ -94,7 +94,7 @@ window.SONGS_DATA = [
     title: "La raja de tu falda",
     artist: "Estopa",
     duration: "0:00",
-    pdfPath: "assets/songs/la-raja-de-tu-falda.pdf"
+    pdfPath: "assets/songs/la_raja_de_tu_falda.pdf"
   },  
   
   // Fito & Fitipaldis //
@@ -103,7 +103,7 @@ window.SONGS_DATA = [
     title: "Soldadito marinero",
     artist: "Fito & Fitipaldis",
     duration: "0:00",
-    pdfPath: "assets/songs/soldadito-marinero.pdf"
+    pdfPath: "assets/songs/soldadito_marinero.pdf"
   },
   
   // Fondo flamenco //
@@ -112,7 +112,7 @@ window.SONGS_DATA = [
     title: "Mi estrella blanca",
     artist: "Fondo flamenco",
     duration: "0:00",
-    pdfPath: "assets/songs/mi-estrella-blanca.pdf"
+    pdfPath: "assets/songs/mi_estrella_blanca.pdf"
   },
 
   // GIPSY KINGS//
@@ -131,7 +131,7 @@ window.SONGS_DATA = [
     title: "La flaca",
     artist: "Jarabe de palo",
     duration: "0:00",
-    pdfPath: "assets/songs/la-flaca.pdf"
+    pdfPath: "assets/songs/la_flaca.pdf"
   },
   
   // JOAQUÍN SABINA //
@@ -140,7 +140,7 @@ window.SONGS_DATA = [
     title: "19 días y 500 noches",
     artist: "Joaquín Sabina",
     duration: "0:00",
-    pdfPath: "assets/songs/19-dias-y-500-noches.pdf"
+    pdfPath: "assets/songs/19_dias_y_500_noches.pdf"
   },
 
   // JOSÉ EL fRANCÉS //
@@ -167,7 +167,7 @@ window.SONGS_DATA = [
     title: "Hecho de menos",
     artist: "Kiko Veneno",
     duration: "0:00",
-    pdfPath: "assets/songs/hecho-de-menos.pdf"
+    pdfPath: "assets/songs/hecho_de_menos.pdf"
   },
 
   {
@@ -192,7 +192,7 @@ window.SONGS_DATA = [
     title: "La lista de la compra",
     artist: "La Cabra Mecánica",
       duration: "0:00",
-    pdfPath: "assets/songs/la-lista-de-la-compra.pdf"
+    pdfPath: "assets/songs/la_lista_de_la_compra.pdf"
   },
 
   // LA HUNGARA //
@@ -201,7 +201,7 @@ window.SONGS_DATA = [
     title: "Aire que respiro",
     artist: "La Hungara",
     duration: "0:00",
-    pdfPath: "assets/songs/aire-que-respiro.pdf"
+    pdfPath: "assets/songs/aire_que_respiro.pdf"
   },
   
   // LA MOSCA CHE CHE //
@@ -210,7 +210,7 @@ window.SONGS_DATA = [
     title: "Para no verte más",
     artist: "La mosca che che",
     duration: "0:00",
-    pdfPath: "assets/songs/para-no-verte-mas.pdf"
+    pdfPath: "assets/songs/para_no_verte_mas.pdf"
   },
 
   // LOLITA FLORES //
@@ -228,7 +228,7 @@ window.SONGS_DATA = [
     title: "El aire de la calle",
     artist: "Los Delinqüentes",
     duration: "0:00",
-    pdfPath: "assets/songs/el-aire-de-la-calle.pdf"
+    pdfPath: "assets/songs/el_aire_de_la_calle.pdf"
   },
   
   {
@@ -236,7 +236,7 @@ window.SONGS_DATA = [
     title: "La primavera trompetera",
     artist: "Los Delinqüentes",
     duration: "0:00",
-    pdfPath: "assets/songs/la-primavera-trompetera.pdf"
+    pdfPath: "assets/songs/la_primavera_trompetera.pdf"
   },
   
   {
@@ -279,7 +279,7 @@ window.SONGS_DATA = [
     title: "Como burro amarrado",
     artist: "Manolo García",
     duration: "0:00",
-    pdfPath: "assets/songs/como-burro-amarrado.pdf"
+    pdfPath: "assets/songs/como_burro_amarrado.pdf"
   },
   
   // MELENDI //
@@ -288,7 +288,7 @@ window.SONGS_DATA = [
     title: "Caminando por la vida",
     artist: "Melendi",
     duration: "0:00",
-    pdfPath: "assets/songs/caminando-po-la-vida.pdf"
+    pdfPath: "assets/songs/caminando_por_la_vida.pdf"
   },
   
   {
@@ -296,7 +296,7 @@ window.SONGS_DATA = [
     title: "Quisiera yo saber",
     artist: "Melendi",
     duration: "0:00",
-    pdfPath: "assets/songs/quisiera-yo-saber.pdf"
+    pdfPath: "assets/songs/quisiera_yo_saber.pdf"
   },
 
   // MIGUELICHI lÓPEZ //
@@ -325,7 +325,7 @@ window.SONGS_DATA = [
     title: "Noches de bohemia",
     artist: "Navajita platea",
     duration: "0:00",
-    pdfPath: "assets/songs/noches-de-bohemia.pdf"
+    pdfPath: "assets/songs/noches_de_bohemia.pdf"
   },
   
   // NOLASCO //
@@ -334,7 +334,7 @@ window.SONGS_DATA = [
     title: "Las cosas más pequeñitas",
     artist: "Nolasco",
     duration: "0:00",
-    pdfPath: "assets/songs/las-cosas-mas-pequeñitas.pdf"
+    pdfPath: "assets/songs/las_cosas_mas_pequeñitas.pdf"
   },
 
   // PERET//
@@ -361,7 +361,7 @@ window.SONGS_DATA = [
     title: "Muchas flores",
     artist: "Rosario Flores",
     duration: "0:00",
-    pdfPath: "assets/songs/muchas-flores.pdf"
+    pdfPath: "assets/songs/muchas_flores.pdf"
   },
   
   // ROZALEN //
