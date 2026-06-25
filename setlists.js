@@ -461,56 +461,101 @@ async function handleExportSetlistPdf() {
 
     const mergedPdf = await PDFDocument.create();
 
-    const coverPage = mergedPdf.addPage([595.28, 841.89]);
     const font = await mergedPdf.embedFont(StandardFonts.Helvetica);
     const boldFont = await mergedPdf.embedFont(StandardFonts.HelveticaBold);
 
-    let y = 760;
+    const pageWidth = 595.28;
+    const pageHeight = 841.89;
 
-    coverPage.drawText(setlist.name || "Setlist", {
-      x: 50,
-      y,
-      size: 26,
-      font: boldFont,
-      color: rgb(0.07, 0.09, 0.15)
-    });
+    const marginX = 50;
+    const bottomMargin = 60;
+    const lineHeight = 22;
 
-    y -= 40;
+    let coverPage = mergedPdf.addPage([pageWidth, pageHeight]);
 
-    coverPage.drawText(`${setlistSongs.length} ${setlistSongs.length === 1 ? "canción" : "canciones"}`, {
-      x: 50,
-      y,
-      size: 12,
-      font,
-      color: rgb(0.3, 0.34, 0.42)
-    });
+    function drawCoverHeader(page) {
+      let y = 760;
 
-    y -= 50;
-
-    coverPage.drawText("Listado de canciones", {
-      x: 50,
-      y,
-      size: 16,
-      font: boldFont,
-      color: rgb(0.07, 0.09, 0.15)
-    });
-
-    y -= 30;
-
-    setlistSongs.forEach((song, index) => {
-      if (y < 60) return;
-
-      const line = `${index + 1}. ${song.title || "Sin título"}${song.artist ? ` — ${song.artist}` : ""}`;
-
-      coverPage.drawText(line, {
-        x: 50,
+      page.drawText(setlist.name || "Setlist", {
+        x: marginX,
         y,
-        size: 12,
-        font,
+        size: 26,
+        font: boldFont,
         color: rgb(0.07, 0.09, 0.15)
       });
 
-      y -= 22;
+      y -= 40;
+
+      page.drawText(`${setlistSongs.length} ${setlistSongs.length === 1 ? "canción" : "canciones"}`, {
+        x: marginX,
+        y,
+        size: 12,
+        font,
+        color: rgb(0.3, 0.34, 0.42)
+      });
+
+      y -= 50;
+
+      page.drawText("Listado de canciones", {
+        x: marginX,
+        y,
+        size: 16,
+        font: boldFont,
+        color: rgb(0.07, 0.09, 0.15)
+      });
+
+      return y - 30;
+    }
+
+    function splitTextIntoLines(text, maxWidth, textFont, fontSize) {
+      const words = String(text).split(" ");
+      const lines = [];
+      let currentLine = "";
+
+      words.forEach(word => {
+        const testLine = currentLine ? `${currentLine} ${word}` : word;
+        const width = textFont.widthOfTextAtSize(testLine, fontSize);
+
+        if (width <= maxWidth) {
+          currentLine = testLine;
+        } else {
+          if (currentLine) {
+            lines.push(currentLine);
+          }
+
+          currentLine = word;
+        }
+      });
+
+      if (currentLine) {
+        lines.push(currentLine);
+      }
+
+      return lines;
+    }
+
+    let y = drawCoverHeader(coverPage);
+
+    setlistSongs.forEach((song, index) => {
+      const line = `${index + 1}. ${song.title || "Sin título"}${song.artist ? ` — ${song.artist}` : ""}`;
+      const lines = splitTextIntoLines(line, pageWidth - marginX * 2, font, 12);
+
+      lines.forEach(textLine => {
+        if (y < bottomMargin) {
+          coverPage = mergedPdf.addPage([pageWidth, pageHeight]);
+          y = drawCoverHeader(coverPage);
+        }
+
+        coverPage.drawText(textLine, {
+          x: marginX,
+          y,
+          size: 12,
+          font,
+          color: rgb(0.07, 0.09, 0.15)
+        });
+
+        y -= lineHeight;
+      });
     });
 
     for (const song of setlistSongs) {
