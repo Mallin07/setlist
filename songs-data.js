@@ -299,6 +299,14 @@ window.SONGS_DATA = [
     pdfPath: "assets/songs/quisiera_yo_saber.pdf"
   },
 
+  {
+    id: "la_boca_junta",
+    title: "La Boca Junta",
+    artist: "Melendi",
+    duration: "0:00",
+    pdfPath: "assets/songs/la_boca_junta.pdf"
+  },  
+
   // MIGUELICHI lÓPEZ //
   {
     id: "ramito_de_violetas",
@@ -345,7 +353,7 @@ window.SONGS_DATA = [
     duration: "0:00",
     pdfPath: "assets/songs/el_muerto_vivo.pdf"
   },   
-
+  
   // POPURRI //
   {
     id: "popurri_flamenco",
@@ -353,7 +361,15 @@ window.SONGS_DATA = [
     artist: "Popurri",
     duration: "0:00",
     pdfPath: "assets/songs/popurri_flamenco.pdf"
-  },  
+  },
+  
+  {
+    id: "popurri_bad_bunny",
+    title: "Popurri Bad Bunny",
+    artist: "Popurri",
+    duration: "0:00",
+    pdfPath: "assets/songs/popurri_bad_bunny.pdf"
+  },     
   
   // ROSARIO FLORES //
   {
